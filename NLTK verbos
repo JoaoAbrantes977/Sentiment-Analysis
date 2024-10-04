@@ -1,0 +1,42 @@
+# Lê o ficheiro para uma string
+with open('texto.txt', 'r', encoding='utf8') as f:
+    text = f.read()
+
+# Tokenize the string
+tokens = word_tokenize(text)
+
+# A part-of-speech tagger, or POS-tagger, processes a sequence of words, and attaches a part of speech tag to each word:
+# Tag the tokens with their part of speech
+tags = pos_tag(tokens)
+
+print(tags)
+
+# Filtra as tag para obter apenas verbos ("VB)
+verbos = [word for word, pos in tags if pos.startswith('VB')]
+print(verbos)
+
+# ------- Processo de  Lematização dos verbos-------------
+# Criamos uma string vazia, percorremos a lista com os verbos e adicionamos os verbos 1 a 1 à variavel string
+lemmatizer = WordNetLemmatizer()
+# Lemmatize the words
+listaLematizada = [lemmatizer.lemmatize(word) for word in verbos]
+print("**************")
+print(listaLematizada)
+
+# Conta a frequência de cada verbo
+fdist = FreqDist(listaLematizada)
+
+# https://tedboy.github.io/nlps/generated/generated/nltk.FreqDist.most_common.html
+# List the n most common elements and their counts from the most common to the least. If n is None, then list all element counts.
+# Cria uma lista com os 20 verbos mais usados
+most_common = fdist.most_common(20)
+
+print(most_common)
+
+myString = ""
+# Retirar apenas os verbos da lista dos verbos mais comuns e exclui os numeros
+# lista = [('is', 40), ('was', 21), ('be', 15), ('have', 14), ('’', 10), ("'s", 9), ('are', 8), ('has', 7), ('do', 7), ('get', 6)]
+for i in range(len(most_common)):
+    print(most_common[i][0])
+    myString = myString + " " + most_common[i][0]
+print(myString)
